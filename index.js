@@ -1,7 +1,7 @@
 var mysql = require("mysql")
 var inquirer = require("inquirer");
 var table = require("table"); 
-var data, config; 
+
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -32,14 +32,23 @@ function start(){
             else if(answer.introPrompt === "View All Employees By Department"){
                 viewDepartment()  
             }
+            else if(answer.introPrompt === "View All Employees By Manager"){
+                viewManager()  
+            }
             else if(answer.introPrompt === "Add Employee"){
                 add()  
+            }
+            else if(answer.introPrompt === "Remove Employee"){
+                remove()  
+            }
+            else if(answer.introPrompt === "Update Employee Role"){
+                update()  
             }
             else{
                 connection.end();
             }
     })
-}
+};
 
 function viewAll(){
     connection.query("SELECT * FROM employees", function(err, res) {
@@ -83,7 +92,7 @@ function viewAll(){
       start()
     });
 
-}
+};
 
 function viewDepartment(){
     inquirer
@@ -128,8 +137,50 @@ function viewDepartment(){
 
 };
 
+function viewManager(){
+    inquirer
+        .prompt({ 
+            name: "manager",
+            type: "input",
+            message: "What manager did the employee worked in?"
+        })
 
-function add() {
+    .then(function(answer){
+    var query = connection.query("SELECT * FROM employees WHERE manager=?", [answer.manager], function(err, res) {
+    if (err) throw err;
+        datamanager = [["First Name", "Last Name", "Manager", "Department"]]
+    for (var i = 0; i < res.length; i++) {
+        var infomanager = [res[i].first_name, res[i].last_name,  res[i].manager, res[i].department]
+        datamanager.push(infomanager)
+      }
+
+      var config = {  
+        border: table.getBorderCharacters("ramac"), 
+        columns: { 
+          0: { 
+            width: 15  // Column 0 of width 1 
+          }, 
+          1: { 
+            width: 15  // Column 1 of width 20 
+          }, 
+          2: { 
+            width: 15   // Column 2 of width 5 
+          },
+          3: { 
+            width: 15   // Column 2 of width 5 
+          }
+        } 
+      }; 
+      
+      var x = table.table(datamanager, config); 
+      console.log(x)
+      start()
+    });
+});
+
+};
+
+function add(){
     // prompt for info about the item being put up for auction
     inquirer
       .prompt([
@@ -183,4 +234,60 @@ function add() {
           }
         );
       });
-  };
+};
+
+function remove(){
+    inquirer
+        .prompt({
+            name: "delete",
+            type:"number",
+            message:"What is the id"
+        })
+    .then(function(answer) {
+    connection.query("DELETE FROM employees WHERE ?",
+      {
+        id: answer.delete
+      },
+      function(err, res) {
+        if (err) throw err;
+        console.log( "Employee deleted!\n");
+        viewAll()
+      }
+    );
+     })
+   
+};
+
+function update() {
+    inquirer
+    .prompt([
+        {
+        name:"id",
+        type:"number",
+        message:"What is the ID of the employee you want to update?"
+    },
+    { 
+        name: "role",
+        type: "input",
+        message: "What is the employee new role?"      
+    }])
+    .then(function(answer){
+     connection.query(
+      "UPDATE employees SET ? WHERE ?",
+      [
+        {
+          title: answer.role
+        },
+        {
+          id: answer.id
+        }
+    ],
+      function(err, res) {
+        if (err) throw err
+        viewAll()
+      }
+    );
+    });
+}
+
+
