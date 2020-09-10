@@ -23,16 +23,16 @@ function start(){
             name: "introPrompt",
             type: "list",
             message: "Would you like to do?",
-            choices: ["View All Employees", "View All Employees By Department", "View All Employees By Manager", "Add Employee", "Remove Employee","Update Employee Role", "Done"]
+            choices: ["View All Employees", "View Employees By Department", "View Employees By Manager", "Add Employee", "Remove Employee","Update Employee Role", "Update Employee's Manager", "Done"]
         })
         .then(function(answer){
             if (answer.introPrompt === "View All Employees") {
                 viewAll();
             } 
-            else if(answer.introPrompt === "View All Employees By Department"){
+            else if(answer.introPrompt === "View Employees By Department"){
                 viewDepartment()  
-            }
-            else if(answer.introPrompt === "View All Employees By Manager"){
+            }``
+            else if(answer.introPrompt === "View Employees By Manager"){
                 viewManager()  
             }
             else if(answer.introPrompt === "Add Employee"){
@@ -41,8 +41,11 @@ function start(){
             else if(answer.introPrompt === "Remove Employee"){
                 remove()  
             }
-            else if(answer.introPrompt === "Update Employee Role"){
-                update()  
+            else if(answer.introPrompt === "Update Employee's Role"){
+                updateRole()  
+            }
+            else if(answer.introPrompt === "Update Employee's Manager"){
+                updateManager()  
             }
             else{
                 connection.end();
@@ -258,7 +261,7 @@ function remove(){
    
 };
 
-function update() {
+function updateRole() {
     inquirer
     .prompt([
         {
@@ -288,6 +291,38 @@ function update() {
       }
     );
     });
-}
+};
+
+function updateManager() {
+    inquirer
+    .prompt([
+        {
+        name:"id",
+        type:"number",
+        message:"What is the ID of the employee you want to update?"
+    },
+    { 
+        name: "manager",
+        type: "input",
+        message: "Who is the employee's new manager?"      
+    }])
+    .then(function(answer){
+     connection.query(
+      "UPDATE employees SET ? WHERE ?",
+      [
+        {
+          manager: answer.manager
+        },
+        {
+          id: answer.id
+        }
+    ],
+      function(err, res) {
+        if (err) throw err
+        viewAll()
+      }
+    );
+    });
+};
 
 
