@@ -51,7 +51,7 @@ function viewAll(){
         data.push(info)
       };
 
-      config = {  
+      var config = {  
         border: table.getBorderCharacters("ramac"), 
         columns: { 
           0: { 
@@ -93,12 +93,39 @@ function viewDepartment(){
             message: "What department did the employee worked in?"
         })
 
-    var query = connection.query("SELECT * FROM songs WHERE genre=?", ["Dance"], function(err, res) {
+    .then(function(answer){
+    var query = connection.query("SELECT * FROM employees WHERE department=?", [answer.department], function(err, res) {
     if (err) throw err;
+        dataDepartment = [["First Name", "Last Name", "Manager", "Department"]]
     for (var i = 0; i < res.length; i++) {
-        console.log(res[i].id + " | " + res[i].title + " | " + res[i].artist + " | " + res[i].genre);
+        var infoDepartment = [res[i].first_name, res[i].last_name,  res[i].manager, res[i].department]
+        dataDepartment.push(infoDepartment)
       }
+
+      var config = {  
+        border: table.getBorderCharacters("ramac"), 
+        columns: { 
+          0: { 
+            width: 15  // Column 0 of width 1 
+          }, 
+          1: { 
+            width: 15  // Column 1 of width 20 
+          }, 
+          2: { 
+            width: 15   // Column 2 of width 5 
+          },
+          3: { 
+            width: 15   // Column 2 of width 5 
+          }
+        } 
+      }; 
+      
+      var x = table.table(dataDepartment, config); 
+      console.log(x)
+      start()
     });
+});
+
 };
 
 
