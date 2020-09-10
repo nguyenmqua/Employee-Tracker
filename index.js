@@ -23,7 +23,7 @@ function start(){
             name: "introPrompt",
             type: "list",
             message: "Would you like to do?",
-            choices: ["View All Employees", "View Employees By Department", "View Employees By Manager", "Add Employee", "Remove Employee","Update Employee Role", "Update Employee's Manager", "Done"]
+            choices: ["View All Employees", "View Employees By Department", "View Employees By Manager", "Add Employee", "Remove Employee","Update Employee Role", "Update Employee's Manager", "Total Utilize Budget", "Done"]
         })
         .then(function(answer){
             if (answer.introPrompt === "View All Employees") {
@@ -46,6 +46,9 @@ function start(){
             }
             else if(answer.introPrompt === "Update Employee's Manager"){
                 updateManager()  
+            }
+            else if(answer.introPrompt === "Total Utilize Budget"){
+                budget() 
             }
             else{
                 connection.end();
@@ -375,4 +378,18 @@ function updateManager(){
       }
     );
     });
+};
+
+function budget(){
+  connection.query("SELECT * FROM employees", function(err, res) {
+    var data = []
+    for (var i = 0; i < res.length; i++) {
+      info = res[i].salary
+      data.push(info)
+    }
+    console.log(
+      data.reduce(function(acc, val) { return acc + val; }, 0)
+    )
+    start()
+  })
 };
