@@ -31,7 +31,7 @@ function start(){
             } 
             else if(answer.introPrompt === "View Employees By Department"){
                 viewDepartment()  
-            }``
+            }
             else if(answer.introPrompt === "View Employees By Manager"){
                 viewManager()  
             }
@@ -67,25 +67,25 @@ function viewAll(){
         border: table.getBorderCharacters("ramac"), 
         columns: { 
           0: { 
-            width: 2   // Column 0 of width 1 
+            width: 2   
           }, 
           1: { 
-            width: 15  // Column 1 of width 20 
+            width: 15  
           }, 
           2: { 
-            width: 15   // Column 2 of width 5 
+            width: 15   
           },
           3: { 
-            width: 15   // Column 2 of width 5 
+            width: 15   
           } ,
           4: { 
-            width: 15   // Column 2 of width 5 
+            width: 15   
           } ,
           5: { 
-            width: 15  // Column 2 of width 5 
+            width: 15  
           } ,
           6: { 
-            width: 15  // Column 2 of width 5 
+            width: 15  
           } 
         } 
       }; 
@@ -243,25 +243,77 @@ function remove(){
     inquirer
         .prompt({
             name: "delete",
-            type:"number",
-            message:"What is the id"
+            type:"list",
+            message:"What do you want to delete by?",
+            choices:["Employee's ID","Department","Roles"]
         })
     .then(function(answer) {
-    connection.query("DELETE FROM employees WHERE ?",
-      {
-        id: answer.delete
-      },
-      function(err, res) {
-        if (err) throw err;
-        console.log( "Employee deleted!\n");
-        viewAll()
-      }
-    );
+        if (answer.delete === "Employee's ID") {
+            inquirer
+            .prompt({
+            name: "id",
+            type:"number",
+            message:"What is the ID of the employee that you want to delete",
+            })
+            .then(function(answer){
+            connection.query("DELETE FROM employees WHERE ?",
+            {
+              id: answer.id
+            },
+            function(err, res) {
+              if (err) throw err;
+              console.log( "Employee deleted!\n");
+              viewAll()
+            }
+          );
+        });
+        } 
+        else if (answer.delete === "Department") {
+            inquirer
+            .prompt({
+            name: "department",
+            type:"input",
+            message:"What department would you like to delete",
+            })
+            .then(function(answer){
+            connection.query("DELETE FROM employees WHERE ?",
+            {
+              department: answer.department
+            },
+            function(err, res) {
+              if (err) throw err;
+              console.log( " deleted!\n");
+              viewAll()
+            }
+          );
+        });
+        } 
+        else if(answer.delete === "Roles"){
+            inquirer
+            .prompt({
+            name: "title",
+            type:"input",
+            message:"What role would you like to delete",
+            })
+            .then(function(answer){
+            connection.query("DELETE FROM employees WHERE ?",
+            {
+              title: answer.title
+            },
+            function(err, res) {
+              if (err) throw err;
+              console.log( "roles deleted!\n");
+              viewAll()
+            }
+          );
+        });
+
+        }
      })
    
 };
 
-function updateRole() {
+function updateRole(){
     inquirer
     .prompt([
         {
@@ -293,7 +345,7 @@ function updateRole() {
     });
 };
 
-function updateManager() {
+function updateManager(){
     inquirer
     .prompt([
         {
@@ -324,5 +376,3 @@ function updateManager() {
     );
     });
 };
-
-
