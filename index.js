@@ -18,12 +18,13 @@ connection.connect(function(err){
 });
 
 function start(){
+    console.log("╭━━━╮╱╱╱╱╱╭╮╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭━╮╭━╮╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭╮\n┃╭━━╯╱╱╱╱╱┃┃╱╱╱╱╱╱╱╱╱╱╱╱╱╱┃┃╰╯┃┃╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭╯╰╮\n┃╰━━┳╮╭┳━━┫┃╭━━┳╮╱╭┳━━┳━━╮┃╭╮╭╮┣━━┳━╮╭━━┳━━┳━━┳╮╭┳━━┳━╋╮╭╯\n┃╭━━┫╰╯┃╭╮┃┃┃╭╮┃┃╱┃┃┃━┫┃━┫┃┃┃┃┃┃╭╮┃╭╮┫╭╮┃╭╮┃┃━┫╰╯┃┃━┫╭╮┫┃\n┃╰━━┫┃┃┃╰╯┃╰┫╰╯┃╰━╯┃┃━┫┃━┫┃┃┃┃┃┃╭╮┃┃┃┃╭╮┃╰╯┃┃━┫┃┃┃┃━┫┃┃┃╰╮\n╰━━━┻┻┻┫╭━┻━┻━━┻━╮╭┻━━┻━━╯╰╯╰╯╰┻╯╰┻╯╰┻╯╰┻━╮┣━━┻┻┻┻━━┻╯╰┻━╯\n╱╱╱╱╱╱╱┃┃╱╱╱╱╱╱╭━╯┃╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭━╯┃\n╱╱╱╱╱╱╱╰╯╱╱╱╱╱╱╰━━╯╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╰━━╯")
     inquirer
         .prompt({ 
             name: "introPrompt",
             type: "list",
             message: "Would you like to do?",
-            choices: ["View All Employees", "View Employees By Department", "View Employees By Manager", "Add Employee", "Remove Employee","Update Employee Role", "Update Employee's Manager", "Total Utilize Budget", "Done"]
+            choices: ["View All Employees", "View Employees By Department", "View Employees By Manager", "Add Employee", "Remove Employee","Update Employee's Role", "Update Employee's Manager", "Total Utilize Budget", "Done"]
         })
         .then(function(answer){
             if (answer.introPrompt === "View All Employees") {
@@ -73,22 +74,22 @@ function viewAll(){
             width: 2   
           }, 
           1: { 
-            width: 15  
+            width: 20  
           }, 
           2: { 
-            width: 15   
+            width: 20   
           },
           3: { 
-            width: 15   
+            width: 20   
           } ,
           4: { 
-            width: 15   
+            width: 20   
           } ,
           5: { 
-            width: 15  
+            width: 20  
           } ,
           6: { 
-            width: 15  
+            width: 20  
           } 
         } 
       }; 
@@ -121,16 +122,16 @@ function viewDepartment(){
         border: table.getBorderCharacters("ramac"), 
         columns: { 
           0: { 
-            width: 15  // Column 0 of width 1 
+            width: 20  // Column 0 of width 1 
           }, 
           1: { 
-            width: 15  // Column 1 of width 20 
+            width: 20  // Column 1 of width 20 
           }, 
           2: { 
-            width: 15   // Column 2 of width 5 
+            width: 20   // Column 2 of width 5 
           },
           3: { 
-            width: 15   // Column 2 of width 5 
+            width: 20   // Column 2 of width 5 
           }
         } 
       }; 
@@ -164,16 +165,16 @@ function viewManager(){
         border: table.getBorderCharacters("ramac"), 
         columns: { 
           0: { 
-            width: 15  // Column 0 of width 1 
+            width: 20  // Column 0 of width 1 
           }, 
           1: { 
-            width: 15  // Column 1 of width 20 
+            width: 20  // Column 1 of width 20 
           }, 
           2: { 
-            width: 15   // Column 2 of width 5 
+            width: 20   // Column 2 of width 5 
           },
           3: { 
-            width: 15   // Column 2 of width 5 
+            width: 20   // Column 2 of width 5 
           }
         } 
       }; 
