@@ -1,25 +1,45 @@
-DROP DATABASE IF EXISTS employeeDB;
-CREATE DATABASE employeeDB;
+DROP DATABASE IF EXISTS employee;
+CREATE DATABASE employee;
 
-USE employeeDB;
-
-CREATE TABLE employees(
+USE employee;
+CREATE TABLE department (
   id INT NOT NULL AUTO_INCREMENT,
-  first_name VARCHAR(100) NOT NULL,
-  last_name VARCHAR(100) NOT NULL, 
-  title VARCHAR(45) NULL,
-  department VARCHAR(45) NOT NULL,
-  salary INT(10) NOT NULL,
-  manager VARCHAR(100) NULL,
+  name VARCHAR(30) NULL,
+  PRIMARY KEY (id)
+);
+CREATE TABLE role (
+  id INT NOT NULL AUTO_INCREMENT,
+  title VARCHAR(30) NULL,
+  salary INT NULL,
+  department_id INT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT FK_RoleDepartment FOREIGN KEY (department_id)
+    REFERENCES department(id)
+);
+
+CREATE TABLE manager (
+  id INT NOT NULL AUTO_INCREMENT, 
+  info VARCHAR(30) NULL,
   PRIMARY KEY (id)
 );
 
-INSERT INTO employees (first_name, last_name, title, department, salary, manager)
-VALUES ("Bob","Smith","Front Desk","Customer Service", 45000, "Dave");
-INSERT INTO employees (first_name, last_name, title, department, salary, manager)
-VALUES ("Eric","Fitzpatrick","Front Desk","Customer Service",55000, "Janeth");
-INSERT INTO employees (first_name, last_name, title, department, salary, manager)
-VALUES ("Joe","Elway","Accountant","Fiance",90000, "Dave");
-INSERT INTO employees (first_name, last_name, title, department, salary, manager)
-VALUES ("Bob","Berry","Event Coordinator","Customer Service",80000, "Jerry");
+CREATE TABLE employee (
+  id INT  NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(30) NULL,
+  last_name VARCHAR(30) NULL,
+  role_id INT NULL,
+  manager_id INT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT FK_EmployeeRole FOREIGN KEY (role_id)
+  REFERENCES role(id),
+  CONSTRAINT FK_EmployeeManger FOREIGN KEY (manager_id)
+    REFERENCES manager(id)
+);
+
+
+SELECT * FROM employee;
+SELECT * FROM role;
+SELECT * FROM department;
+SELECT * FROM manager;
+
 
